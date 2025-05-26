@@ -2,6 +2,15 @@
 # See the autoinstall documentation at:
 # https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
 autoinstall:
+  user-data:
+    users:
+      - name: aios
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        groups: sudo
+        shell: /bin/bash
+        lock_passwd: True
+        ssh_authorized_keys:
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEaM+kzuEXGG0H6JjcYuig4HZrxwyos/+hbuq0K4AjQp chiplee@gmail.com
   apt:
     disable_components: []
     fallback: offline-install
@@ -36,14 +45,7 @@ autoinstall:
     password: $6$Q3FsrcHrJPz0HbUZ$XH0ogqwtacB2IHarM6misY4VrW0Hb7J4mYoOOAysEmd5tCLN1Ui25IDGTN39UULlmnMFzIBqD9rTz/plc/V931
     realname: ubuntu
     username: ubuntu
-  users:
-    - name: aios
-      sudo: ALL=(ALL) NOPASSWD:ALL
-      groups: sudo
-      shell: /bin/bash
-      lock_passwd: false
-      ssh_authorized_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEaM+kzuEXGG0H6JjcYuig4HZrxwyos/+hbuq0K4AjQp chiplee@gmail.com
+  
   kernel:
     package: linux-generic
   keyboard:
