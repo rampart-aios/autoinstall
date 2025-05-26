@@ -156,3 +156,6 @@ autoinstall:
       type: mount
   updates: security
   version: 1
+  packages:
+    - nfs-common
+    - nano

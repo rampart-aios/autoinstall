@@ -4,13 +4,12 @@
 
 Boot [netboot.xyz](https://netboot.xyz/), select:
 ```
-    Linux Network Installs
+    Linux Network Installs (64-bit)
         /Linux Distros
             /Ubuntu
-                /Latest Releases
-                    /Ubuntu <version>
-                        /Install types
-                            /Specify preseed/autoinstall url...
+                /Ubuntu 24.04 LTS Noble Numbat
+                    /Install types
+                        /Specify preseed/autoinstall url...
 
 ```
 and enter: https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964
