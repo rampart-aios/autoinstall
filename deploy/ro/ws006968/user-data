@@ -169,3 +169,4 @@ autoinstall:
   packages:
     - nfs-common
     - nano
+    - iptables
