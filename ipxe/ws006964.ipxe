@@ -1,0 +1,11 @@
+#!ipxe
+
+# Set variables
+set base-url http://archive.ubuntu.com/ubuntu/dists/noble/main/installer-amd64/current/legacy-images/netboot/ubuntu-installer/amd64
+set autoinstall-url https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964
+
+echo Booting Ubuntu 24.04 installer with autoinstall URL: ${autoinstall-url}
+
+kernel ${base-url}/linux auto=true priority=critical console=ttyS0,115200n8 --- autoinstall ds=nocloud-net;s=${autoinstall-url}/
+initrd ${base-url}/initrd.gz
+boot
