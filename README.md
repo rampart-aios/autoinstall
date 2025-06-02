@@ -16,4 +16,5 @@ and enter: https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964
 to deploy the example in this repo, which gives me access to your server :)
 
 
+### iPXE 
 https://rampart-aios.github.io/autoinstall/ipxe/ws006964.ipxe

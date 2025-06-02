@@ -44,7 +44,7 @@ autoinstall:
     hostname: ws006964
     password: $6$Q3FsrcHrJPz0HbUZ$XH0ogqwtacB2IHarM6misY4VrW0Hb7J4mYoOOAysEmd5tCLN1Ui25IDGTN39UULlmnMFzIBqD9rTz/plc/V931
     realname: ubuntu
-    username: aios
+    username: ubuntu
   kernel:
     package: linux-generic
   keyboard:
