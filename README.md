@@ -12,9 +12,14 @@ Boot [netboot.xyz](https://netboot.xyz/), select:
                         /Specify preseed/autoinstall url...
 
 ```
-and enter: https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964
-to deploy the example in this repo, which gives me access to your server :)
+and enter one of the followings: 
+
+https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964
+https://rampart-aios.github.io/autoinstall/deploy/ciai-ws/ciai-cpu-w05588
 
 
 ### iPXE 
 https://rampart-aios.github.io/autoinstall/ipxe/ws006964.ipxe
+
+### Default user_data location
+/var/log/installer/autoinstall-user-data
