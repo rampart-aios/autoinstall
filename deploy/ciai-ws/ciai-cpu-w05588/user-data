@@ -2,15 +2,14 @@
 # See the autoinstall documentation at:
 # https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
 autoinstall:
-  user-data:
-    users:
-      - name: aios
-        sudo: ALL=(ALL) NOPASSWD:ALL
-        groups: sudo
-        shell: /bin/bash
-        lock_passwd: True
-        ssh_authorized_keys:
-          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEaM+kzuEXGG0H6JjcYuig4HZrxwyos/+hbuq0K4AjQp chiplee@gmail.com
+  users:
+    - name: aios
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      groups: sudo
+      shell: /bin/bash
+      lock_passwd: True
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEaM+kzuEXGG0H6JjcYuig4HZrxwyos/+hbuq0K4AjQp chiplee@gmail.com
   apt:
     disable_components: []
     fallback: offline-install
@@ -65,15 +64,12 @@ autoinstall:
           - 10.127.128.5
     version: 2
     wifis: {}
-  oem:
-    install: auto
   source:
     id: ubuntu-server-minimal
     search_drivers: false
   ssh:
     allow-pw: true
-    authorized-keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEaM+kzuEXGG0H6JjcYuig4HZrxwyos/+hbuq0K4AjQp chiplee@gmail.com
+    authorized-keys: []
     install-server: true
   storage:
     config:
