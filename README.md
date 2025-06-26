@@ -15,10 +15,10 @@ Boot [netboot.xyz](https://netboot.xyz/), select:
 and enter one of the followings: 
 
 ```
-https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964
-https://rampart-aios.github.io/autoinstall/deploy/ciai-ws/ciai-cpu-w05588
-https://rampart-aios.github.io/autoinstall/deploy/ciai-ws/ciai-cpu-w05587
-https://rampart-aios.github.io/autoinstall/deploy/ciai-ws/ciai-gpu-w05589
+https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964/
+https://rampart-aios.github.io/autoinstall/deploy/ciai-ws/ciai-cpu-w05588/
+https://rampart-aios.github.io/autoinstall/deploy/ciai-ws/ciai-cpu-w05587/
+https://rampart-aios.github.io/autoinstall/deploy/ciai-ws/ciai-gpu-w05589/
 ```
 
 
