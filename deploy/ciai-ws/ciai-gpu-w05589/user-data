@@ -42,7 +42,7 @@ autoinstall:
     install: false
   identity:
     hostname: ciai-gpu-w05589
-    password: $6$tCCT7L7aLKTgNRJ8$rQVitKuQ4Fn1278QqLMale1De7mVdtVyFPSq7wSZ3z8uWNao5.SUrD9Z.Soc7XJkHqh/zJSgrA9L11.s2AIdQ/
+    password: $6$48HMbxhI4uwAg3Dv$94WZoZD0Kws48xS0D8.vkqSJgTWDCSbrDANmJqaVzi.CxrsHV65v5SIql5nxPRc2Rgtp4nMyUTgiwk24xAh.M/
     realname: ubuntu
     username: ubuntu
   kernel:
@@ -72,7 +72,8 @@ autoinstall:
     search_drivers: false
   ssh:
     allow-pw: true
-    authorized-keys: []
+    authorized-keys: 
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEaM+kzuEXGG0H6JjcYuig4HZrxwyos/+hbuq0K4AjQp chiplee@gmail.com
     install-server: true
   storage:
     config:
@@ -123,7 +124,7 @@ autoinstall:
       id: format-1
       type: format
     - device: disk-nvme2n1
-      size: 1020932390912
+      size: 7998286069760
       wipe: superblock
       number: 3
       preserve: false
