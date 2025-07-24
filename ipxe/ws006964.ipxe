@@ -1,11 +1,21 @@
 #!ipxe
 
 # Set variables
-set base-url http://archive.ubuntu.com/ubuntu/dists/noble/main/installer-amd64/current/legacy-images/netboot/ubuntu-installer/amd64
-set autoinstall-url https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964
+set autoinstall_url https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964/
+set kernel_url https://github.com/netbootxyz/ubuntu-squash/releases/download/24.04.2-dac09526/
+set ubuntu_iso_url https://releases.ubuntu.com/noble/ubuntu-24.04.2-live-server-amd64.iso
+set netboot_params ip=dhcp url=${ubuntu_iso_url}
+set install_params autoinstall ds=nocloud-net;s=${autoinstall_url}
 
 echo Booting Ubuntu 24.04 installer with autoinstall URL: ${autoinstall-url}
 
-kernel ${base-url}/linux auto=true priority=critical console=ttyS0,115200n8 --- autoinstall ds=nocloud-net;s=${autoinstall-url}/
-initrd ${base-url}/initrd.gz
+imgfree
+kernel ${kernel_url}vmlinuz \
+    root=/dev/ram0 \
+    ramdisk_size=3500000 \
+    cloud-config-url=/dev/null \
+    ${netboot_params} \
+    ${install_params} \
+    initrd=initrd.magic
+initrd ${kernel_url}initrd
 boot
