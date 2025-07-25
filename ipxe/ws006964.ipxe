@@ -1,21 +1,32 @@
 #!ipxe
+# This script is intended for Ubuntu Distro
 
-# Set variables
-set autoinstall_url https://rampart-aios.github.io/autoinstall/deploy/ro/ws006964/
-set kernel_url https://github.com/netbootxyz/ubuntu-squash/releases/download/24.04.2-dac09526/
-set ubuntu_iso_url https://releases.ubuntu.com/noble/ubuntu-24.04.2-live-server-amd64.iso
-set netboot_params ip=dhcp url=${ubuntu_iso_url}
-set install_params autoinstall ds=nocloud-net;s=${autoinstall_url}
+# dynamic vars
+set mirror https://releases.ubuntu.com
+set base_dir ubuntu
+set codename noble
+set version 24.04.2
+set os_arch amd64
+set department ro
+set machine ws006964
 
-echo Booting Ubuntu 24.04 installer with autoinstall URL: ${autoinstall-url}
+# static vars
+set kernel_url ${mirror}/${codename}/netboot/${os_arch}
+set ubuntu_iso_url ${mirror}/${codename}/${base_dir}-${version}-live-server-${os_arch}.iso
+set autoinstall_url https://rampart-aios.github.io/autoinstall/deploy/${department}/${machine}
+
+# operation
+echo Booting Ubuntu 24.04 installer...
+echo Kernel URL: ${kernel_url}
+echo Autoinstall URL: ${autoinstall_url}
 
 imgfree
-kernel ${kernel_url}vmlinuz \
+kernel ${kernel_url}/linux \
     root=/dev/ram0 \
     ramdisk_size=3500000 \
     cloud-config-url=/dev/null \
-    ${netboot_params} \
-    ${install_params} \
+    ip=dhcp url=${ubuntu_iso_url} \
+    autoinstall ds=nocloud-net;s=${autoinstall_url}/ \
     initrd=initrd.magic
-initrd ${kernel_url}initrd
+initrd ${kernel_url}/initrd
 boot
