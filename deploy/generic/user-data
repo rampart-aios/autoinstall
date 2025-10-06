@@ -1,0 +1,185 @@
+#cloud-config
+# Autoinstall ref: https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
+preserve_hostname: false
+manage_etc_hosts: true
+runcmd:
+  - |
+    ip4=$(ip -4 -o addr show scope global | awk '{print $4}' | cut -d/ -f1 | head -n1)
+    [ -n "$ip4" ] || exit 0
+    hn="ip-$(echo "$ip4" | tr . -)"
+    hostnamectl set-hostname "$hn"
+    if grep -q "^127.0.1.1" /etc/hosts; then
+      sed -i "s/^127.0.1.1.*/127.0.1.1\t$hn/" /etc/hosts
+    else
+      printf "127.0.1.1\t%s\n" "$hn" >> /etc/hosts
+    fi
+autoinstall:
+  version: 1
+
+  # Site user you already use; keep keys here or manage via your datasource
+  users:
+    - name: aios
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      groups: sudo
+      shell: /bin/bash
+      lock_passwd: true
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEaM+kzuEXGG0H6JjcYuig4HZrxwyos/+hbuq0K4AjQp chiplee@gmail.com
+
+  identity:
+    hostname: ubuntu
+    realname: ubuntu
+    username: ubuntu
+    # Reuse your existing hash or replace with your own
+    password: $6$Q3FsrcHrJPz0HbUZ$XH0ogqwtacB2IHarM6misY4VrW0Hb7J4mYoOOAysEmd5tCLN1Ui25IDGTN39UULlmnMFzIBqD9rTz/plc/V931
+
+  apt:
+    disable_components: []
+    fallback: offline-install
+    geoip: true
+    mirror-selection:
+      primary:
+      - country-mirror
+      - arches: &id001
+        - amd64
+        - i386
+        uri: http://archive.ubuntu.com/ubuntu/
+      - arches: &id002
+        - s390x
+        - arm64
+        - armhf
+        - powerpc
+        - ppc64el
+        - riscv64
+        uri: http://ports.ubuntu.com/ubuntu-ports
+    preserve_sources_list: false
+    security:
+    - arches: *id001
+      uri: http://security.ubuntu.com/ubuntu/
+    - arches: *id002
+      uri: http://ports.ubuntu.com/ubuntu-ports
+
+  codecs:
+    install: false
+  drivers:
+    install: false
+
+  kernel:
+    package: linux-generic
+
+  keyboard:
+    layout: us
+    toggle: null
+    variant: ''
+  locale: en_US.UTF-8
+
+  # Hardware-agnostic networking: match all ethernet-like names, use DHCP
+  network:
+    version: 2
+    ethernets:
+      all-en:
+        match:
+          name: "e*"
+        dhcp4: true
+        dhcp-identifier: mac
+        optional: true
+        # If you need custom DNS, uncomment below and set your site resolvers
+        # nameservers:
+        #   addresses: [10.127.66.11, 10.127.128.4, 10.127.128.5]
+
+  source:
+    id: ubuntu-server-minimal
+    search_drivers: false
+
+  ssh:
+    allow-pw: true
+    install-server: true
+    authorized-keys: []
+
+storage:
+  config:
+  - id: disk0
+    type: disk
+    ptable: gpt
+    match:
+      size: largest
+    wipe: superblock-recursive
+    grub_device: false
+
+  - id: partition-efi
+    type: partition
+    device: disk0
+    size: 1127219200
+    wipe: superblock
+    flag: boot
+    number: 1
+    grub_device: true
+
+  - id: format-efi
+    type: format
+    volume: partition-efi
+    fstype: fat32
+
+  - id: partition-boot
+    type: partition
+    device: disk0
+    size: 2147483648
+    wipe: superblock
+    number: 2
+    grub_device: false
+
+  - id: format-boot
+    type: format
+    volume: partition-boot
+    fstype: ext4
+
+  - id: partition-lvm
+    type: partition
+    device: disk0
+    size: -1
+    wipe: superblock
+    number: 3
+    grub_device: false
+
+  - id: vg-ubuntu
+    type: lvm_volgroup
+    name: ubuntu-vg
+    devices:
+    - partition-lvm
+    preserve: false
+
+  - id: lv-root
+    type: lvm_partition
+    name: ubuntu-lv
+    volgroup: vg-ubuntu
+    size: 322122547200B
+    wipe: superblock
+    preserve: false
+    path: /dev/ubuntu-vg/ubuntu-lv
+
+  - id: format-root
+    type: format
+    volume: lv-root
+    fstype: ext4
+
+  - id: mount-root
+    type: mount
+    device: format-root
+    path: /
+
+  - id: mount-boot
+    type: mount
+    device: format-boot
+    path: /boot
+
+  - id: mount-efi
+    type: mount
+    device: format-efi
+    path: /boot/efi
+
+  updates: security
+
+  packages:
+    - nfs-common
+    - vim
+    - htop
