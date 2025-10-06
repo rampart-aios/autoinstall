@@ -6,7 +6,7 @@ runcmd:
   - |
     ip4=$(ip -4 -o addr show scope global | awk '{print $4}' | cut -d/ -f1 | head -n1)
     [ -n "$ip4" ] || exit 0
-    hn="ip-$(echo "$ip4" | tr . -)"
+    hn="ro-$(echo "$ip4" | tr . -)"
     hostnamectl set-hostname "$hn"
     if grep -q "^127.0.1.1" /etc/hosts; then
       sed -i "s/^127.0.1.1.*/127.0.1.1\t$hn/" /etc/hosts
@@ -96,86 +96,86 @@ autoinstall:
     install-server: true
     authorized-keys: []
 
-storage:
-  config:
-  - id: disk0
-    type: disk
-    ptable: gpt
-    match:
-      size: largest
-    wipe: superblock-recursive
-    grub_device: false
+  storage:
+    config:
+    - id: disk0
+      type: disk
+      ptable: gpt
+      match:
+        size: largest
+      wipe: superblock-recursive
+      grub_device: false
 
-  - id: partition-efi
-    type: partition
-    device: disk0
-    size: 1127219200
-    wipe: superblock
-    flag: boot
-    number: 1
-    grub_device: true
+    - id: partition-efi
+      type: partition
+      device: disk0
+      size: 1127219200
+      wipe: superblock
+      flag: boot
+      number: 1
+      grub_device: true
 
-  - id: format-efi
-    type: format
-    volume: partition-efi
-    fstype: fat32
+    - id: format-efi
+      type: format
+      volume: partition-efi
+      fstype: fat32
 
-  - id: partition-boot
-    type: partition
-    device: disk0
-    size: 2147483648
-    wipe: superblock
-    number: 2
-    grub_device: false
+    - id: partition-boot
+      type: partition
+      device: disk0
+      size: 2147483648
+      wipe: superblock
+      number: 2
+      grub_device: false
 
-  - id: format-boot
-    type: format
-    volume: partition-boot
-    fstype: ext4
+    - id: format-boot
+      type: format
+      volume: partition-boot
+      fstype: ext4
 
-  - id: partition-lvm
-    type: partition
-    device: disk0
-    size: -1
-    wipe: superblock
-    number: 3
-    grub_device: false
+    - id: partition-lvm
+      type: partition
+      device: disk0
+      size: -1
+      wipe: superblock
+      number: 3
+      grub_device: false
 
-  - id: vg-ubuntu
-    type: lvm_volgroup
-    name: ubuntu-vg
-    devices:
-    - partition-lvm
-    preserve: false
+    - id: vg-ubuntu
+      type: lvm_volgroup
+      name: ubuntu-vg
+      devices:
+      - partition-lvm
+      preserve: false
 
-  - id: lv-root
-    type: lvm_partition
-    name: ubuntu-lv
-    volgroup: vg-ubuntu
-    size: 322122547200B
-    wipe: superblock
-    preserve: false
-    path: /dev/ubuntu-vg/ubuntu-lv
+    - id: lv-root
+      type: lvm_partition
+      name: ubuntu-lv
+      volgroup: vg-ubuntu
+      size: 322122547200B
+      wipe: superblock
+      preserve: false
+      path: /dev/ubuntu-vg/ubuntu-lv
 
-  - id: format-root
-    type: format
-    volume: lv-root
-    fstype: ext4
+    - id: format-root
+      type: format
+      volume: lv-root
+      fstype: ext4
 
-  - id: mount-root
-    type: mount
-    device: format-root
-    path: /
+    - id: mount-root
+      type: mount
+      device: format-root
+      path: /
 
-  - id: mount-boot
-    type: mount
-    device: format-boot
-    path: /boot
+    - id: mount-boot
+      type: mount
+      device: format-boot
+      path: /boot
 
-  - id: mount-efi
-    type: mount
-    device: format-efi
-    path: /boot/efi
+    - id: mount-efi
+      type: mount
+      device: format-efi
+      path: /boot/efi
 
   updates: security
 
