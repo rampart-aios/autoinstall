@@ -97,85 +97,8 @@ autoinstall:
     authorized-keys: []
 
   storage:
-    config:
-    - id: disk0
-      type: disk
-      ptable: gpt
-      match:
-        size: largest
-      wipe: superblock-recursive
-      grub_device: false
-
-    - id: partition-efi
-      type: partition
-      device: disk0
-      size: 1127219200
-      wipe: superblock
-      flag: boot
-      number: 1
-      grub_device: true
-
-    - id: format-efi
-      type: format
-      volume: partition-efi
-      fstype: fat32
-
-    - id: partition-boot
-      type: partition
-      device: disk0
-      size: 2147483648
-      wipe: superblock
-      number: 2
-      grub_device: false
-
-    - id: format-boot
-      type: format
-      volume: partition-boot
-      fstype: ext4
-
-    - id: partition-lvm
-      type: partition
-      device: disk0
-      size: -1
-      wipe: superblock
-      number: 3
-      grub_device: false
-
-    - id: vg-ubuntu
-      type: lvm_volgroup
-      name: ubuntu-vg
-      devices:
-      - partition-lvm
-      preserve: false
-
-    - id: lv-root
-      type: lvm_partition
-      name: ubuntu-lv
-      volgroup: vg-ubuntu
-      size: 322122547200B
-      wipe: superblock
-      preserve: false
-      path: /dev/ubuntu-vg/ubuntu-lv
-
-    - id: format-root
-      type: format
-      volume: lv-root
-      fstype: ext4
-
-    - id: mount-root
-      type: mount
-      device: format-root
-      path: /
-
-    - id: mount-boot
-      type: mount
-      device: format-boot
-      path: /boot
-
-    - id: mount-efi
-      type: mount
-      device: format-efi
-      path: /boot/efi
+      layout:
+        name: lvm
 
   updates: security
 
